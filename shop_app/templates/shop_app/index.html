@@ -1,34 +1,37 @@
 {% extends 'shop_app/base.html' %}
 
 {% block content %}
-<main>
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-        {% for product in products %}
-        <div class="col">
-            <div class="card mb-4 rounded-3 shadow-sm">
-                <div class="card-header py-3">
-                    <div class="d-flex justify-content-between">
-                        <div></div>
-                        <h4 class="my-0 fw-normal" id="header-{{ product.id }}">{{ product.name }}</h4>
-{#<!--                        <a href="/delete/{{ product.id }}"><button type="button" class="btn-close" id="closeButton" aria-label="Close"></button></a>-->#}
-                        <button type="button" class="btn-close button-card" id="closeButton" value="{{ product.id }}" aria-label="Close" data-bs-toggle="modal" data-bs-target="#exampleModal"></button>
+    <main>
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+            {% for product in products %}
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <div class="d-flex justify-content-between">
+                                <div></div>
+                                <h4 class="my-0 fw-normal" id="header-{{ product.id }}">{{ product.name }}</h4>
+                                {#<!--                        <a href="/delete/{{ product.id }}"><button type="button" class="btn-close" id="closeButton" aria-label="Close"></button></a>-->#}
+                                <button type="button" class="btn-close button-card" id="closeButton"
+                                        value="{{ product.id }}" aria-label="Close" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">{{ product.price }}<small
+                                    class="text-muted fw-light">руб.</small>
+                            </h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>{{ product.description }}</li>
+                            </ul>
+                            <a href="/buy/{{ product.id }}">
+                                <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить!</button>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">{{ product.price }}<small
-                            class="text-muted fw-light">руб.</small>
-                    </h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>{{ product.description }}</li>
-                    </ul>
-                    <a href="/buy/{{ product.id }}">
-                        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить!</button>
-                    </a>
-                </div>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    </main>
 
     {% include 'shop_app/inc/_modal_delete.html' %}
 {% endblock %}

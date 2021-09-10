@@ -6,8 +6,8 @@ app_name = 'shop_app'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    # path('about', views.about),
-    # path('create', views.create),
-    # path('delete/<int:id>', views.delete),
-    # path('buy/<int:id>', views.buy),
+    path('about', views.about),
+    path('create', views.create_product),
+    path('delete/<int:prod_id>', views.delete_product),
+    path('buy/<int:prod_id>', views.buy_product),
 ]
