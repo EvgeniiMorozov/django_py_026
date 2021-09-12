@@ -6,7 +6,12 @@ from .models import Product
 
 def index(request):
     products = Product.objects.all()
-    return render(request, 'shop_app/index.html', {'products': products})
+    context = {
+        'products': products,
+        'collection': range(10),
+    }
+
+    return render(request, 'shop_app/index.html', context)
 
 
 def about(request):
