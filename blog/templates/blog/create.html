@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    Добавление статьи :: {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <div class="mb-3">
+            <label for="authorArticle" class="form-label">Автор статьи</label>
+            <input type="text" name="author" class="form-control" id="authorArticle" placeholder="Автор статьи">
+        </div>
+        <div class="mb-3">
+            <label for="titleArticle" class="form-label">Название статьи</label>
+            <input type="text" name="title" class="form-control" id="titleArticle" placeholder="Название статьи">
+        </div>
+        <div class="mb-3">
+            <label for="textArticle" class="form-label">Текст статьи</label>
+            <textarea name="text" class="form-control" id="textArticle" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Опубликовать</button>
+    </form>
+{% endblock %}
