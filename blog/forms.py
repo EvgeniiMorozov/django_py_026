@@ -18,6 +18,8 @@ class PostForm(ModelForm):
                 'id': 'titleArticle'
             }),'text': Textarea(attrs={
                 'class': 'form-control',
-                'id': 'textArticle'
+                'id': 'textArticle',
+                'rows': '3',
+                'placeholder': 'Текст статьи',
             }),
         }
