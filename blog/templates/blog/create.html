@@ -11,12 +11,15 @@
                 {% csrf_token %}
                 {% for el in form %}
                     <div class="mb-3">
-                    {{ el.label }}
-                    {{ el }}
+                        {{ el.label }}
+                        {{ el }}
                     </div>
                 {% endfor %}
                 <button type="submit" class="col-12 btn btn-success">Опубликовать</button>
             </form>
+        </div>
+        <div class="alert alert-danger mt-5" role="alert">
+            {{ error }}
         </div>
     </div>
 {% endblock %}

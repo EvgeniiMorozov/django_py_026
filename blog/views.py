@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from blog.models import PostModel
 from .forms import PostForm
@@ -20,8 +20,18 @@ def create_post(request):
     #         text=request.POST.get('textArticle')
     #     )
     #     post.save()
+    error = ''
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            redirect("blog:index")
+        else:
+            error = "Данные формы не корректны!"
+
     form = PostForm()
     context = {
-        'form': form
+        'form': form,
+        "error": error
     }
     return render(request, 'blog/create.html', context)
