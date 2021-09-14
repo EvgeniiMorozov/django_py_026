@@ -12,11 +12,13 @@ class PostForm(ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Автор статьи',
                 'id': 'authorArticle'
-            }),'title': TextInput(attrs={
+            }),
+            'title': TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Название статьи',
                 'id': 'titleArticle'
-            }),'text': Textarea(attrs={
+            }),
+            'text': Textarea(attrs={
                 'class': 'form-control',
                 'id': 'textArticle',
                 'rows': '3',
