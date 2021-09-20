@@ -1,0 +1,28 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Weather{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'weather_app/css/bootstrap.min.css' %}">
+</head>
+<body>
+
+{% include 'weather_app/inc/_header.html' %}
+
+<div class="container">
+    {% block content %}Content block!{% endblock %}
+</div>
+
+{% include 'weather_app/inc/_footer.html' %}
+
+
+<script src="{% static 'weather_app/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'weather_app/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'weather_app/js/script.js' %}"></script>
+</body>
+</html>
