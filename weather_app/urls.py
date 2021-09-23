@@ -5,7 +5,8 @@ from . import views
 app_name = 'weather_app'
 
 urlpatterns = [
-    path('', views.index, name='index')
+    path('', views.index, name='index'),
+    path('add_city', views.AddCity.as_view(), name='add'),
     # path('', views.index, name='index'),
     # path('create', views.create_post, name='create_post'),
     # path('about', views.about),
