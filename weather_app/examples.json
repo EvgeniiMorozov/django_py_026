@@ -1,0 +1,35 @@
+{
+  "coord": { "lon": 61.4297, "lat": 55.1544 },
+  "weather": [
+    {
+      "id": 802,
+      "main": "Clouds",
+      "description": "переменная облачность",
+      "icon": "03d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 9.05,
+    "feels_like": 7.37,
+    "temp_min": 9.05,
+    "temp_max": 9.81,
+    "pressure": 1028,
+    "humidity": 49
+  },
+  "visibility": 10000,
+  "wind": { "speed": 3, "deg": 30 },
+  "clouds": { "all": 40 },
+  "dt": 1632378032,
+  "sys": {
+    "type": 1,
+    "id": 8975,
+    "country": "RU",
+    "sunrise": 1632361283,
+    "sunset": 1632405122
+  },
+  "timezone": 18000,
+  "id": 1508291,
+  "name": "Челябинск",
+  "cod": 200
+}
