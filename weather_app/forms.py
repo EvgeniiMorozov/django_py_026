@@ -2,7 +2,7 @@ import re
 from django.forms import ModelForm
 from django.core.exceptions import ValidationError
 
-from models import CityWeather
+from .models import CityWeather
 
 
 class CityForm(ModelForm):
@@ -10,9 +10,9 @@ class CityForm(ModelForm):
     class Meta:
         model = CityWeather
         fields = ['name']
-        widgets = {
+        # widgets = {
 
-        }
+        # }
 
     def clean_name(self):
         name = self.cleaned_data['name']

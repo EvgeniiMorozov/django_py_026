@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView
 
-from models import CityWeather
+from .models import CityWeather
 from .weather import one_call_weather, city_weather_call
 from .forms import CityForm
 

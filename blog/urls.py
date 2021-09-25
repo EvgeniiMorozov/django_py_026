@@ -1,14 +1,14 @@
 from django.urls import path
 
 from . import views
+from .views import CreatePost, PostsView, ShowPost
 
 app_name = 'blog'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('create', views.create_post, name='create_post'),
-    # path('about', views.about),
-    # path('create', views.create_product),
-    # path('delete/<int:prod_id>', views.delete_product),
-    # path('buy/<int:prod_id>', views.buy_product),
+    # path('', views.index, name='index'),
+    path('', PostsView.as_view(), name='index'),
+    path('post/<int:id>', ShowPost.as_view(), name='show_post'),
+    # path('create', views.create_post, name='create_post'),
+    path('create', CreatePost.as_view(), name='create_post'),
 ]
