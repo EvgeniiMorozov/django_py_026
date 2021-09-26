@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 
-from blog.models import PostModel
+from blog.models import PostModel, Category
 from .forms import PostForm
 
 
