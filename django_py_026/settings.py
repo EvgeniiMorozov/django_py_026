@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "shop_app",
     "blog",
     "weather_app",
+    "form_app"
 ]
 
 MIDDLEWARE = [
