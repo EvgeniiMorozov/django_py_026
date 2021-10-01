@@ -6,6 +6,8 @@ from form_app.models import User
 
 class UsersView(ListView):
     model = User
+    context_object_name = "users"
+    template_name = "form_app/user_list.html"
 
 
 class RegistrationView(CreateView):

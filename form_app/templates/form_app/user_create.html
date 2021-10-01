@@ -5,16 +5,22 @@
 {% endblock %}
 
 {% block content %}
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-8 mx-auto mb-5 mt-5">
+                {{ form.as_p }}
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto pt-5">
+                <button type="submit" class="btn btn-lg btn-success mb-5">Подтвердить данные</button>
+            </div>
 
-    <form method="post">
-        {% csrf_token %}
-        <div class="col-8 mx-auto mb-5 mt-5">
-            {{ form.as_p }}
-        </div>
-        <div class="d-grid gap-2 col-6 mx-auto pt-5">
-            <button type="submit" class="btn btn-lg btn-success mb-5">Подтвердить данные</button>
-        </div>
+            {% if error %}
+                <div class="alert alert-danger mt-5" role="alert">
+                    {{ error }}
+                </div>
+            {% endif %}
 
-    </form>
-
+        </form>
+    </div>
 {% endblock %}
