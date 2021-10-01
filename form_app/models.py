@@ -17,6 +17,8 @@ class MaxSizeErrorException(Exception):
     pass
 
 
+# Кастомный валидатор на размер загружаемого файла
+# "https://overcoder.net/q/17064/django-%D0%BE%D0%B3%D1%80%D0%B0%D0%BD%D0%B8%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%80%D0%B0-%D0%B7%D0%B0%D0%B3%D1%80%D1%83%D0%B7%D0%BA%D0%B8-%D1%84%D0%B0%D0%B9%D0%BB%D0%B0"
 def file_size(value):
     if value.size > User.MAX_PHOTO_SIZE:
         raise MaxSizeErrorException("Размер файла фотографии больше допустимого размера!")
@@ -25,13 +27,14 @@ def file_size(value):
 class User(models.Model):
     MAX_PHOTO_RESOLUTION = (800, 800)
     MAX_PHOTO_SIZE = 3145728
+    # Словарь с валидаторами
     VALIDATORS = {
         "regex": RegexValidator(
             regex=r"^[a-zа-я]", message="Имя|Фамилия должно начинаться с только с буквы!", code="invalid", flags=IGNORECASE
         ),
         "email": EmailValidator(
-            message="Разрешённые почтовые домены: mail.ru, yandex.ru, gmail.com",
-            whitelist=["mail.ru", "yandex.ru", "gmail.com"],
+            message="Введите корректный email",
+            whitelist=["my_domain", "my_host"],
         ),
     }
 
