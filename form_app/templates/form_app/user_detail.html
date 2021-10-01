@@ -1,0 +1,43 @@
+{% extends "form_app/base.html" %}
+
+{% block title %}
+    О пользователе
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="img__block col-6">
+                <img class="img-fluid" src="{{ user.photo.url }}" alt="{{ user.first_name }} {{ user.last_name }}">
+            </div>
+            <div class="col-6">
+                <table class="table table-bordered border-primary">
+                    <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>{{ user.pk }}</td>
+                    </tr>
+                    <tr>
+                        <td>Имя</td>
+                        <td>{{ user.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Фамилия</td>
+                        <td>{{ user.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Url</td>
+                        <td>{{ user.slug }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

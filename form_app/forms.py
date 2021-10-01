@@ -18,12 +18,12 @@ class UserRegistrationForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "slug", "photo"]
+        fields = ["first_name", "last_name", "email", "photo"]
         widgets = {
             "first_name": TextInput(attrs={"class": "form-control", "placeholder": "Имя пользователя"}),
             "last_name": TextInput(attrs={"class": "form-control", "placeholder": "Фамилия пользователя"}),
             "email": EmailInput(attrs={"class": "form-control", "placeholder": "Электронная почта"}),
-            "slug": TextInput(attrs={"class": "form-control", "placeholder": "SLUG"}),
+            # "slug": TextInput(attrs={"class": "form-control", "placeholder": "SLUG"}),
         }
 
     def clean_first_name(self):
@@ -42,12 +42,13 @@ class UserRegistrationForm(ModelForm):
 
     def clean_photo(self):
         photo = self.cleaned_data["photo"]
-        img = Image.open(photo)
+        image = Image.open(photo)
         max_width, max_height = User.MAX_PHOTO_RESOLUTION
+        image_width, image_height = image.size
         # Проверяем разрешение загружаемого фото
-        if img.width > max_width or img.height > max_height:
+        if image_width > max_width or image_height > max_height:
             raise ValidationError("Разрешение фото больше максимального!")
         # Проверяем размер загружаемого фото
-        if img.size > User.MAX_PHOTO_SIZE:
-            raise ValidationError("Размер файла фотографии больше допустимого размера!")
+        # if image.size > User.MAX_PHOTO_SIZE:
+        #     raise ValidationError("Размер файла фотографии больше допустимого размера!")
         return photo
