@@ -2,7 +2,7 @@ from re import IGNORECASE
 from PIL import Image
 from django.db import models
 from django.urls import reverse
-from django.core.validators import RegexValidator, EmailValidator, FileExtensionValidator
+from django.core.validators import RegexValidator, EmailValidator
 
 
 class MaxResolutionErrorException(Exception):
