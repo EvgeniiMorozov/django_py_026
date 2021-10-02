@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog', '0002_alter_postmodel_category'),
+        ("blog", "0002_alter_postmodel_category"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='postmodel',
-            name='slug',
-            field=models.SlugField(blank=True, max_length=60, null=True, unique=True, verbose_name='URL'),
+            model_name="postmodel",
+            name="slug",
+            field=models.SlugField(blank=True, max_length=60, null=True, unique=True, verbose_name="URL"),
         ),
     ]

@@ -1,17 +1,16 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView, DetailView, CreateView
 
-from .models import PostModel, Category
 from .forms import PostForm
+from .models import PostModel
 from .utils import DataMixin
 
 
 class PostsView(DataMixin, ListView):
     model = PostModel
-    template_name = 'blog/index.html'
-    context_object_name = 'posts'
+    template_name = "blog/index.html"
+    context_object_name = "posts"
+
     # extra_context = {'title': 'Главная страница'}
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -27,8 +26,8 @@ class PostsView(DataMixin, ListView):
 
 class CategoryView(DataMixin, ListView):
     model = PostModel
-    template_name = 'blog/index.html'
-    context_object_name = 'posts'
+    template_name = "blog/index.html"
+    context_object_name = "posts"
     # extra_context = {'title': 'Главная страница'}
     allow_empty = False
 
@@ -39,17 +38,17 @@ class CategoryView(DataMixin, ListView):
         return context
 
     def get_queryset(self):
-        return PostModel.objects.filter(category__slug=self.kwargs['cat_slug'])
+        return PostModel.objects.filter(category__slug=self.kwargs["cat_slug"])
 
 
 # Slug
 class ShowPost(DetailView):
     model = PostModel
-    template_name = 'blog/show_post.html'
-    slug_url_kwarg = 'post_slug'
-    context_object_name = 'post'
+    template_name = "blog/show_post.html"
+    slug_url_kwarg = "post_slug"
+    context_object_name = "post"
 
 
 class CreatePost(LoginRequiredMixin, CreateView):
     form_class = PostForm
-    template_name = 'blog/create.html'
+    template_name = "blog/create.html"
