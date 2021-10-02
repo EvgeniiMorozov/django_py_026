@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import PostModel
+from .models import PostModel, Category
 from .forms import PostForm
+from .utils import DataMixin
 
 
-class PostsView(ListView):
+class PostsView(DataMixin, ListView):
     model = PostModel
     template_name = 'blog/index.html'
     context_object_name = 'posts'
@@ -14,14 +16,16 @@ class PostsView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная страница'
+        # user_context = self.get_user_context(text="Главная страница")
+        # context.update(user_context)
+        context |= self.get_user_context(title="Главная страница")
         return context
 
     def get_queryset(self):
         return PostModel.objects.filter(is_published=True)
 
 
-class CategoryView(ListView):
+class CategoryView(DataMixin, ListView):
     model = PostModel
     template_name = 'blog/index.html'
     context_object_name = 'posts'
@@ -30,7 +34,8 @@ class CategoryView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная страница'
+        context |= self.get_user_context(title=f"Категория {context['posts'][0].category.name}")
+
         return context
 
     def get_queryset(self):
@@ -45,6 +50,6 @@ class ShowPost(DetailView):
     context_object_name = 'post'
 
 
-class CreatePost(CreateView):
+class CreatePost(LoginRequiredMixin, CreateView):
     form_class = PostForm
     template_name = 'blog/create.html'

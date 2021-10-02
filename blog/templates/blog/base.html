@@ -13,7 +13,17 @@
     <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
             <div class="row">
-                <div class="col-sm-8 col-md-7 py-4">
+                <nav>
+                    <ul class="list-unstyled">
+                        {% for cat in cats %}
+                            <li><a href="{% url 'blog:show_cat' cat.slug %}" class="text-white">{{ cat.name }}</a></li>
+                        {% empty %}
+                            <h3>Нет ни одной категории</h3>
+                        {% endfor %}
+
+                    </ul>
+                </nav>
+                <div class="col-sm-4 col-md-7 py-4">
                     <h4 class="text-white">О нас</h4>
                     <p class="text-muted">Блог обо мне и о мире вокруг.</p>
                 </div>
