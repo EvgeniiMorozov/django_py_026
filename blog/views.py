@@ -1,4 +1,6 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import PostForm
@@ -52,3 +54,17 @@ class ShowPost(DetailView):
 class CreatePost(LoginRequiredMixin, CreateView):
     form_class = PostForm
     template_name = "blog/create.html"
+
+
+class RegisterUser(DataMixin, CreateView):
+    form_class = UserCreationForm
+    template_name = "blog/register.html"
+    success_url = reverse_lazy("blog:index")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context |= self.get_user_context(title="Регистрация")
+
+
+class LoginUser:
+    pass
