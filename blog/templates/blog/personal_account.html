@@ -1,0 +1,30 @@
+{% if user.is_authenticated %}
+
+{% extends 'blog/base.html' %}
+
+{% block title %}Личный кабинет{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+    <!-- Блок с фото -->
+    <div class="col-6">
+        {% if user.photo %}
+            <img class="w-25 img-fluid" src="{{user.photo.url}}" alt="{{user.first_name}} {{user.last_name}}">
+        {% else %}
+            <img class="w-25 img-fluid" src="{% static 'media/blog/default_photo.jpg' %}" alt="no_photo">
+        {% endif %}
+    </div>
+    <!-- Конец блока с фото -->
+    <!-- Блок с личными данными -->
+    <div class="col-6">
+        <h1>User Informatiom</h1>
+    </div>
+    <!-- конец блока с личными данными -->
+    </div>
+</div>
+
+{% endblock content %}
+
+{% endif %}
