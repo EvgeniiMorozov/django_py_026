@@ -22,5 +22,37 @@
             {% endif %}
 
         </form>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Эл.почта</th>
+                <th scope="col">Фото</th>
+                <th scope="col">URL</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.pk }}</th>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <img class="img-fluid" src="{{ user.photo.url }}" alt="{{ user.slug }}" width="100">
+                    </td>
+                    <td>{{ user.slug }}</td>
+                </tr>
+            {% empty %}
+                <h3>Зарегистрированных пользователей в системе нет!</h3>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
     </div>
 {% endblock %}

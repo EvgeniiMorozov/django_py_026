@@ -1,11 +1,10 @@
 from re import IGNORECASE
 
+from PIL import Image
+from django.core.validators import RegexValidator, EmailValidator
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.core.validators import RegexValidator, EmailValidator
-
-from PIL import Image
 from unidecode import unidecode
 
 
@@ -30,7 +29,10 @@ class User(models.Model):
     # Словарь с валидаторами
     VALIDATORS = {
         "regex": RegexValidator(
-            regex=r"^[a-zа-я]", message="Имя|Фамилия должно начинаться с только с буквы!", code="invalid", flags=IGNORECASE
+            regex=r"^[a-zа-я]",
+            message="Имя|Фамилия должно начинаться с только с буквы!",
+            code="invalid",
+            flags=IGNORECASE,
         ),
         "email": EmailValidator(
             message="Введите корректный email",
