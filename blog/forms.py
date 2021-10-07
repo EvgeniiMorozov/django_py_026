@@ -1,4 +1,6 @@
-from django.forms import ModelForm, TextInput, Textarea
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.forms import ModelForm, TextInput, Textarea, CharField, PasswordInput
 
 from .models import PostModel
 
@@ -39,3 +41,48 @@ class PostForm(ModelForm):
         if "!!" in title:
             self.add_error("title", "Очень много восклицательных знаков!!!")
         return title
+
+
+class RegisterUserForm(UserCreationForm):
+
+    username = CharField(
+        label="Логин", widget=TextInput(attrs={"class": "form-control", "placeholder": "Логин", "id": "login-input"})
+    )
+    password1 = CharField(
+        label="Пароль",
+        widget=PasswordInput(
+            attrs={"class": "form-control", "placeholder": "Введите пароль", "id": "enter-password-input"}
+        ),
+    )
+    password2 = CharField(
+        label="Подтвердите пароль",
+        widget=PasswordInput(
+            attrs={"class": "form-control", "placeholder": "Подтвердите пароль", "id": "confirm-password-input"}
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    class Meta:
+        model = User
+        fields = ["username", "password1", "password2"]
+
+
+class LoginUserForm(AuthenticationForm):
+    username = CharField(
+        label="Логин", widget=TextInput(attrs={"class": "form-control", "placeholder": "Логин", "id": "login-input"})
+    )
+    password = CharField(
+        label="Пароль",
+        widget=PasswordInput(attrs={"class": "form-control", "placeholder": "Пароль", "id": "password-input"}),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
+    class Meta:
+        model = User
+        fields = ["username", "password"]

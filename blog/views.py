@@ -1,9 +1,13 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, RedirectView
 
-from .forms import PostForm
+from .forms import PostForm, LoginUserForm, RegisterUserForm
 from .models import PostModel
 from .utils import DataMixin
 
@@ -57,14 +61,42 @@ class CreatePost(LoginRequiredMixin, CreateView):
 
 
 class RegisterUser(DataMixin, CreateView):
-    form_class = UserCreationForm
+    form_class = RegisterUserForm
     template_name = "blog/register.html"
     success_url = reverse_lazy("blog:index")
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context |= self.get_user_context(title="Регистрация")
+        return context
 
 
-class LoginUser:
-    pass
+class LoginUser(DataMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = "blog/login.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context |= self.get_user_context(title="Вход на сайт")
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("blog:index")
+
+
+# def logout_user(request):
+#     logout(request)
+#     return redirect("blog:index")
+
+
+class UserLogout(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect("blog:index")
+
+
+class UserProfile(DataMixin, LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "blog/personal_account.html"
+    # slug_url_kwarg =
+    context_object_name = "user"
