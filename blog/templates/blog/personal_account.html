@@ -3,30 +3,29 @@
 {% extends 'blog/base.html' %}
 {% if user.is_authenticated %}
 
-    {% block title %}Личный кабинет{% endblock title %}
+{% block title %}Личный кабинет{% endblock title %}
 
-    {% block content %}
+{% block content %}
 
-        <div class="container">
-            <div class="row">
-                <!-- Блок с фото -->
-                <div class="col-6">
-                    {% if user.photo %}
-                        <img class="w-25 img-fluid" src="{{ user.photo.url }}"
-                             alt="{{ user.first_name }} {{ user.last_name }}">
-                    {% else %}
-                        <img class="w-25 img-fluid" src="{% static 'blog/img/default_photo.jpg' %}" alt="no_photo">
-                    {% endif %}
-                </div>
-                <!-- Конец блока с фото -->
-                <!-- Блок с личными данными -->
-                <div class="col-6">
-                    <h1>User information</h1>
-                </div>
-                <!-- конец блока с личными данными -->
-            </div>
+<div class="container">
+    <div class="row">
+        <!-- Блок с фото -->
+        <div class="col-6">
+            {% if user.photo %}
+            <img class="w-25 img-fluid" src="{{ user.photo.url }}" alt="{{ user.first_name }} {{ user.last_name }}">
+            {% else %}
+            <img class="w-25 img-fluid" src="{% static 'blog/img/default_photo.jpg' %}" alt="no_photo">
+            {% endif %}
         </div>
+        <!-- Конец блока с фото -->
+        <!-- Блок с личными данными -->
+        <div class="col-6">
+            <h1>User information</h1>
+        </div>
+        <!-- конец блока с личными данными -->
+    </div>
+</div>
 
-    {% endblock content %}
+{% endblock content %}
 
 {% endif %}

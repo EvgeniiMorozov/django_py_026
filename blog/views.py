@@ -99,4 +99,5 @@ class UserProfile(DataMixin, LoginRequiredMixin, DetailView):
     model = User
     template_name = "blog/personal_account.html"
     # slug_url_kwarg =
+    pk_url_kwarg = "user_id"
     context_object_name = "user"
