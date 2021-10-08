@@ -22,6 +22,7 @@
                         <li><a href="{% url 'blog:index' %}" class="text-white">Главная</a></li>
                         {% if request.user.is_authenticated %}
                         <li><a href="{% url 'blog:create_post' %}" class="text-white">Создать пост</a></li>
+                        <li><a href="{% url 'blog:personal_account' %}" class="text-white">Личный кабинет</a></li>
                         {% endif %}
                     </ul>
                 </div>

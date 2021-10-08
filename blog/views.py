@@ -1,15 +1,18 @@
-from django.contrib.auth import logout
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView, RedirectView
+from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import PostForm, LoginUserForm, RegisterUserForm
 from .models import PostModel
 from .utils import DataMixin
+
+
+# user = get_user_model()
 
 
 class PostsView(DataMixin, ListView):
@@ -97,13 +100,13 @@ class UserLogout(View):
 
 class UserProfile(DataMixin, LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        return render(request, "blog/personal_account.html")
+        return render(request, "blog/personal_account.html", {"user": User.objects.get(pk=request.user.id)})
 
 
 # class UserProfile(DataMixin, LoginRequiredMixin, DetailView):
 #     model = User
 #     template_name = "blog/personal_account.html"
 #     # slug_url_kwarg =
-#     pk_url_kwarg = "user_id"
+#     # pk_url_kwarg = "user_id"
 #     context_object_name = "user"
 
