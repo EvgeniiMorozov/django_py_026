@@ -11,6 +11,6 @@ urlpatterns = [
     path("register/", RegisterUser.as_view(), name="register"),
     path("login/", LoginUser.as_view(), name="login"),
     path("logout/", UserLogout.as_view(), name="logout"),
-    path("personal_account/<int:user_id>", UserProfile.as_view(), name="personal_account"),
-    # path("personal_account/", UserProfile.as_view(), name="personal_account"),
+    # path("personal_account/<int:user_id>", UserProfile.as_view(), name="personal_account"),
+    path("personal_account/", UserProfile.as_view(), name="personal_account"),
 ]
