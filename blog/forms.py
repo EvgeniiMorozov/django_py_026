@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm, TextInput, Textarea, CharField, PasswordInput
+from django.contrib.auth import get_user_model
 
 from .models import PostModel
 
@@ -66,8 +67,9 @@ class RegisterUserForm(UserCreationForm):
         self.label_suffix = ""
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ["username", "password1", "password2"]
+        # fields = ["__all__"]
 
 
 class LoginUserForm(AuthenticationForm):
@@ -84,5 +86,5 @@ class LoginUserForm(AuthenticationForm):
         self.label_suffix = ""
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ["username", "password"]

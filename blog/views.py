@@ -100,7 +100,10 @@ class UserLogout(View):
 
 class UserProfile(DataMixin, LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        return render(request, "blog/personal_account.html", {"user": User.objects.get(pk=request.user.id)})
+        print(request.user.get_username())
+        return render(
+            request, "blog/personal_account.html", {"user": User.objects.get(username=request.user.get_username())}
+        )
 
 
 # class UserProfile(DataMixin, LoginRequiredMixin, DetailView):
@@ -109,4 +112,3 @@ class UserProfile(DataMixin, LoginRequiredMixin, View):
 #     # slug_url_kwarg =
 #     # pk_url_kwarg = "user_id"
 #     context_object_name = "user"
-
