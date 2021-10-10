@@ -1,12 +1,10 @@
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
-
 from unidecode import unidecode
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin
+from django.db import models
 
-from blog.managers import MyUser2Manager
+from .managers import MyUser2Manager
 
 
 # Create your models here.
@@ -32,6 +30,9 @@ class PostModel(models.Model):
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ["-publish_date", "title"]
+
 
 # статья -> statia
 class Category(models.Model):
@@ -46,17 +47,20 @@ class Category(models.Model):
 
 
 # class MyUser(AbstractUser):
-#     GENDERS = (("m", "Мужчина"), ("f", "Женщина"))
-
-#     gender = models.CharField(verbose_name="Пол", max_length=1, choices=GENDERS, default="")
-#     fio = models.CharField(verbose_name="ФИО", max_length=60)
+#     GENDERS = (
+#         ('m', 'Мужчина'),
+#         ('f', 'Женщина')
+#     )
+#     gender = models.CharField('Пол', max_length=1, choices=GENDERS, default='')
+#     fio = models.CharField('ФИО', max_length=50)
 
 
 class MyUser2(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(verbose_name="Электронная почта", max_length=50, unique=True, null=False, blank=False)
+    email = models.EmailField("Электронная почта", max_length=50, unique=True, null=False, blank=False)
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
-    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
     objects = MyUser2Manager()

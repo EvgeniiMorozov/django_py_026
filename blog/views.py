@@ -1,30 +1,25 @@
-from django.contrib.auth import get_user_model, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+from django.contrib.auth import logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.shortcuts import redirect, render
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import ListView, DetailView, CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import PostForm, LoginUserForm, RegisterUserForm
-from .models import PostModel
+from .models import PostModel, Category
+from .forms import PostForm, RegisterUserForm, LoginUserForm
 from .utils import DataMixin
-
-
-# user = get_user_model()
 
 
 class PostsView(DataMixin, ListView):
     model = PostModel
     template_name = "blog/index.html"
     context_object_name = "posts"
-
     # extra_context = {'title': 'Главная страница'}
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        # user_context = self.get_user_context(text="Главная страница")
+        # user_context = self.get_user_context(title='Главная страница')
         # context.update(user_context)
         context |= self.get_user_context(title="Главная страница")
         return context
@@ -42,8 +37,7 @@ class CategoryView(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context |= self.get_user_context(title=f"Категория {context['posts'][0].category.name}")
-
+        context |= self.get_user_context(title=f'Категория {context["posts"][0].category.name}')
         return context
 
     def get_queryset(self):
@@ -51,16 +45,29 @@ class CategoryView(DataMixin, ListView):
 
 
 # Slug
-class ShowPost(DetailView):
+class ShowPost(DataMixin, DetailView):
     model = PostModel
     template_name = "blog/show_post.html"
     slug_url_kwarg = "post_slug"
     context_object_name = "post"
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context |= self.get_user_context(title=context["post"].title)
+        return context
 
-class CreatePost(LoginRequiredMixin, CreateView):
+
+class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
     form_class = PostForm
     template_name = "blog/create.html"
+    raise_exception = False
+    login_url = reverse_lazy("blog:login")
+    success_url = reverse_lazy("blog:create_post")
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context |= self.get_user_context(title="Создание поста")
+        return context
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -87,28 +94,10 @@ class LoginUser(DataMixin, LoginView):
         return reverse_lazy("blog:index")
 
 
-# def logout_user(request):
-#     logout(request)
-#     return redirect("blog:index")
+def logout_user(request):
+    logout(request)
+    return redirect("blog:index")
 
 
-class UserLogout(View):
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return redirect("blog:index")
-
-
-class UserProfile(DataMixin, LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        print(request.user.get_username())
-        return render(
-            request, "blog/personal_account.html", {"user": User.objects.get(username=request.user.get_username())}
-        )
-
-
-# class UserProfile(DataMixin, LoginRequiredMixin, DetailView):
-#     model = User
-#     template_name = "blog/personal_account.html"
-#     # slug_url_kwarg =
-#     # pk_url_kwarg = "user_id"
-#     context_object_name = "user"
+class UserProfile:
+    pass

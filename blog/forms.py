@@ -1,9 +1,10 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User
-from django.forms import ModelForm, TextInput, Textarea, CharField, PasswordInput
+
+# from django.contrib.auth.models import User
+from django.forms import ModelForm, TextInput, Textarea, SlugField, PasswordInput, CharField, EmailField
 from django.contrib.auth import get_user_model
 
-from .models import PostModel
+from .models import PostModel, MyUser2
 
 
 # Class Based Forms (CBF)
@@ -45,20 +46,17 @@ class PostForm(ModelForm):
 
 
 class RegisterUserForm(UserCreationForm):
-
-    username = CharField(
-        label="Логин", widget=TextInput(attrs={"class": "form-control", "placeholder": "Логин", "id": "login-input"})
+    email = EmailField(
+        label="Email", widget=TextInput(attrs={"class": "form-control", "placeholder": "Email", "id": "login-input"})
     )
     password1 = CharField(
         label="Пароль",
-        widget=PasswordInput(
-            attrs={"class": "form-control", "placeholder": "Введите пароль", "id": "enter-password-input"}
-        ),
+        widget=PasswordInput(attrs={"class": "form-control", "placeholder": "Пароль", "id": "password1-input"}),
     )
     password2 = CharField(
-        label="Подтвердите пароль",
+        label="Подтверждение пароля",
         widget=PasswordInput(
-            attrs={"class": "form-control", "placeholder": "Подтвердите пароль", "id": "confirm-password-input"}
+            attrs={"class": "form-control", "placeholder": "Подтверждение пароля", "id": "password2-input"}
         ),
     )
 
@@ -68,8 +66,7 @@ class RegisterUserForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ["username", "password1", "password2"]
-        # fields = ["__all__"]
+        fields = ["email", "password1", "password2"]
 
 
 class LoginUserForm(AuthenticationForm):
