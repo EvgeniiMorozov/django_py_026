@@ -25,7 +25,8 @@ class PostsView(DataMixin, ListView):
         return context
 
     def get_queryset(self):
-        return PostModel.objects.filter(is_published=True)
+        # return PostModel.objects.filter(is_published=True)
+        return PostModel.objects.all().select_related("category")
 
 
 class CategoryView(DataMixin, ListView):
@@ -37,11 +38,13 @@ class CategoryView(DataMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context |= self.get_user_context(title=f'Категория {context["posts"][0].category.name}')
+        cat = Category.objects.get(slug=self.kwargs["cat_slug"])
+        # context |= self.get_user_context(title=f'Категория {context["posts"][0].category.name}')
+        context |= self.get_user_context(title=f'Категория {cat.name}')
         return context
 
     def get_queryset(self):
-        return PostModel.objects.filter(category__slug=self.kwargs["cat_slug"])
+        return PostModel.objects.filter(category__slug=self.kwargs["cat_slug"]).select_related("category")
 
 
 # Slug
