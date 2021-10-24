@@ -1,5 +1,4 @@
 {% load static %}
-{% load cache %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +9,6 @@
 </head>
 <body>
 
-{% cache 60 header_cache %}
 <header>
     <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
@@ -66,7 +64,6 @@
         </div>
     </div>
 </header>
-{% endcache %}
 
 <div class="container mt-5">
     {% block body %}{% endblock %}
