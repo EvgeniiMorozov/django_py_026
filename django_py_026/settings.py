@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "shop_app",
     "blog",
     "weather_app",
-    "form_app"
+    "form_app",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "django_py_026.urls"
@@ -132,3 +134,7 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
 
 AUTH_USER_MODEL = "blog.MyUser2"
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
