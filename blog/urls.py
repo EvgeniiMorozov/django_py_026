@@ -2,8 +2,7 @@ from django.urls import path
 from django.views.decorators.cache import cache_page
 
 from . import views
-from .views import PostsView, ShowPost, CreatePost, CategoryView, RegisterUser, LoginUser, logout_user
-
+from .views import PostsView, ShowPost, CreatePost, CategoryView, RegisterUser, LoginUser, logout_user, LoadMorePosts
 
 app_name = "blog"
 urlpatterns = [
@@ -14,4 +13,5 @@ urlpatterns = [
     path("register", RegisterUser.as_view(), name="register"),
     path("login", LoginUser.as_view(), name="login"),
     path("logout", logout_user, name="logout"),
+    path("load-more-posts", LoadMorePosts.as_view(), name="more_posts"),
 ]

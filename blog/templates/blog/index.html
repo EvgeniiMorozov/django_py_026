@@ -1,67 +1,143 @@
 {% extends 'blog/base.html' %}
 
 {% block title %}
-<title>{{ title }}</title>
+    <title>{{ title }}</title>
 {% endblock %}
 
 {% block body %}
-<main>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for post in posts %}
-        <div class="col">
+    <main>
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="all-posts">
+            {% for post in posts %}
+
+                {% if forloop.last %}
+                    <div class="col" id="last-id" data-last-id="{{ post.id }}">
+                {% else %}
+                    <div class="col">
+                {% endif %}
+
             <div class="card h-100">
                 <img src="{{ post.image.url }}" class="card-img-top" width="100">
                 <div class="card-body">
-                    <h5 class="card-title">{{post.author}}. {{ post.title }}</h5>
+                    <h5 class="card-title">{{ post.author }}. {{ post.title }}</h5>
                     <p class="card-text">{{ post.text|truncatewords:"15" }}</p>
                     <a href="{% url 'blog:show_cat' post.category.slug %}">
-                        <span class="badge rounded-pill bg-secondary">{{post.category}}</span>
+                        <span class="badge rounded-pill bg-secondary">{{ post.category }}</span>
                     </a>
                 </div>
                 <div class="d-flex card-footer justify-content-between">
                     <small class="text-muted">{{ post.publish_date|timesince }} назад</small>
-                    <small class="text-muted"><a class="text-secondary"
-                            href="{% url 'blog:show_post' post.slug %}">Читать пост -></a></small>
+                    <small class="text-muted">
+                        <a class="text-secondary" href="{% url 'blog:show_post' post.slug %}">Читать пост -></a>
+                    </small>
+                </div>
+            </div>
+            </div>
+            {% empty %}
+                <h1>Нет ни одного поста!</h1>
+            {% endfor %}
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link"
+                                                         href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            {% endif %}
+
+                            {% for page in paginator.page_range %}
+
+                                {% if page == page_obj.number %}
+                                    <li class="page-item active"><a class="page-link"
+                                                                    href="?page={{ page }}">{{ page }}</a>
+                                    </li>
+                                {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    <button type="button" class="btn btn-primary mt-4" id="more-posts">Далее</button>
                 </div>
             </div>
         </div>
-        {% empty %}
-        <h1>Нет ни одного поста!</h1>
-        {% endfor %}
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    {% if page_obj.has_previous%}
-                    <li class="page-item"><a class="page-link"
-                            href="?page={{page_obj.previous_page_number}}">Previous</a></li>
-                    {% else %}
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    {% endif %}
+    </main>
 
-                    {% for page in paginator.page_range %}
+{% endblock %}
 
-                    {% if page == page_obj.number %}
-                    <li class="page-item active"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
-                    {% elif page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
-                    <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next%}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{page_obj.next_page_number}}">next</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-</main>
+{% block javascript %}
+    <script>
+        $("#more-posts").click(function () {
+            const lastPostObj = $("#last-post")
+            let lastPostId = lastPostObj.attr("data-last-id")
+            let data = {
+                lastPostId: lastPostId
+            }
+            lastPostObj.removeAttr("data-last-id").removeAttr("id")
+            $.ajax({
+                method: "GET",
+                dataType: "json",
+                data: data,
+                url: "{% url "blog:more_posts" %}",
+                success: function (data) {
+                    const result = data["data"]
+                    if (!result) {
+                        $("#more-posts").css("display", "none")
+                    } else {
+                        $.each(result, function (key, obj) {
+                            if (obj['last_post']) {
+                                $('#all-posts').append(
+                                    '<div class="col" id="last-post" data-last-id="' + obj.id + '">' +
+                                    '<div class="card h-100">' +
+                                    '<img src="' + obj.image_url + '" class="card-img-top" width="100">' +
+                                    '<div class="card-body">' +
+                                    '<h5 class="card-title">' + obj.author + '. ' + obj.title + '</h5>' +
+                                    '<p class="card-text">' + obj.text + '</p>' +
+                                    '<a href="' + obj.cat_url + '"><span class="badge bg-secondary">' + obj.cat_name + '</span></a>' +
+                                    '</div>' +
+                                    '<div class="d-flex card-footer justify-content-between">' +
+                                    '<small class="text-muted">' + obj.publish_date + ' назад</small>' +
+                                    '<small class="text-muted"><a class="text-secondary" href="' + obj.post_url + '">Читать пост -></a></small>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>'
+                                )
+                            } else {
+                                $('#all-posts').append(
+                                    '<div class="col" >' +
+                                    '<div class="card h-100">' +
+                                    '<img src="' + obj.image_url + '" class="card-img-top" width="100">' +
+                                    '<div class="card-body">' +
+                                    '<h5 class="card-title">' + obj.author + '. ' + obj.title + '</h5>' +
+                                    '<p class="card-text">' + obj.text + '</p>' +
+                                    '<a href="' + obj.cat_url + '"><span class="badge bg-secondary">' + obj.cat_name + '</span></a>' +
+                                    '</div>' +
+                                    '<div class="d-flex card-footer justify-content-between">' +
+                                    '<small class="text-muted">' + obj.publish_date + ' назад</small>' +
+                                    '<small class="text-muted"><a class="text-secondary" href="' + obj.post_url + '">Читать пост -></a></small>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>'
+                                )
+                            }
+                        })
+                    }
+                }
+            })
+        })
+    </script>
 {% endblock %}

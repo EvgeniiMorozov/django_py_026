@@ -2,6 +2,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,6 +17,7 @@ class PostsView(DataMixin, ListView):
     model = PostModel
     template_name = "blog/index.html"
     context_object_name = "posts"
+
     # extra_context = {'title': 'Главная страница'}
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -40,7 +43,7 @@ class CategoryView(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         cat = Category.objects.get(slug=self.kwargs["cat_slug"])
         # context |= self.get_user_context(title=f'Категория {context["posts"][0].category.name}')
-        context |= self.get_user_context(title=f'Категория {cat.name}')
+        context |= self.get_user_context(title=f"Категория {cat.name}")
         return context
 
     def get_queryset(self):
@@ -104,3 +107,32 @@ def logout_user(request):
 
 class UserProfile:
     pass
+
+
+class LoadMorePosts(View):
+    def get(self, request, *args, **kwargs):
+        last_post_id = request.GET.get("lastPostId")
+        print(last_post_id)
+        posts = PostModel.objects.filter(pk__lt=int(last_post_id)).order_by("-publish_date", "title")[:3]
+        print(posts)
+
+        if not posts:
+            return JsonResponse({"data": False})
+
+        data = []
+
+        for post in posts:
+            obj = {
+                "id": post.id,
+                "author": post.author,
+                "title": post.title,
+                "text": post.text,
+                "image_url": post.image.url,
+                "publish_date": post.publish_date,
+                "cat_name": post.category.name,
+                "cat_url": f"cat/{post.category.slug}",
+                "post_url": f"post/{post.slug}",
+            }
+            data.append(obj)
+        data[-1]["last_post"] = True
+        return JsonResponse({"data": data})
