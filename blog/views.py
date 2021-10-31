@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
@@ -12,6 +14,8 @@ from .models import PostModel, Category
 from .forms import PostForm, RegisterUserForm, LoginUserForm
 from .utils import DataMixin
 
+logger = logging.getLogger(__name__)
+
 
 class PostsView(DataMixin, ListView):
     model = PostModel
@@ -24,6 +28,8 @@ class PostsView(DataMixin, ListView):
         context = super().get_context_data(**kwargs)
         # user_context = self.get_user_context(title='Главная страница')
         # context.update(user_context)
+        logger.warning("Warning Hello!")
+        logger.critical("ПРИВЕТ")
         context |= self.get_user_context(title="Главная страница")
         return context
 

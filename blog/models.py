@@ -1,3 +1,5 @@
+import logging
+
 from django.urls import reverse
 from django.utils.text import slugify
 from unidecode import unidecode
@@ -5,6 +7,8 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser, Permissio
 from django.db import models
 
 from .managers import MyUser2Manager
+
+logger = logging.getLogger(__name__)
 
 
 # Create your models here.
@@ -25,6 +29,7 @@ class PostModel(models.Model):
         if not self.slug:
             string = str(self.title)
             self.slug = slugify(unidecode(string))
+            logger.info(f"Created post with autoset slug: {self.slug}")
         return super().save(*args, **kwargs)
 
     def __str__(self):
